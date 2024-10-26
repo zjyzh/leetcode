@@ -11,4 +11,60 @@ output=[ 0, 0, 1, 2, 0]
 
 """
 
-print(f'*{word.center(width)}*')
+
+
+
+
+class Solution:
+
+  def distance(self, x, y):
+    return min(abs(x[0] - y[0]), abs(x[1] - y[1]))
+
+  
+  def minCostToConnectServers(self, x: List[int], y: List[int]) -> int:
+    n = len(x)
+    fa = [ i for i in range(n)]
+
+    def find(i):
+        if fa[i] == i:
+            return i
+        else:
+            fa[i] = find(fa[i])
+            return fa[i]
+    
+    def union(i, j):
+        root_i = find(i)
+        root_j = find(j)
+        fa[root_i] = fa[root_j]
+
+    edges = []
+
+    for i in range(n-1):
+      for j in range(i+1, n ):
+        l = [ x[i], y[i] ]
+        r = [ x[j], y[j] ]
+        dis = self.distance(l,r)
+        
+        edges.append( [i, j, dis])
+
+    edges = sorted( edges, key = lambda x : x[2] )
+    # print(edges)
+
+    res = 0
+    for edge in (edges):
+      start = edge[0]
+      end  = edge[1]
+      dis = edge[2]
+      if find(start) != find(end):
+        union(start, end)
+        res += dis
+
+    return res
+        
+        
+    
+
+
+
+
+
