@@ -2,7 +2,7 @@ import heapq
 from typing import List
 
 '''
-Dijkstra 算法，用优先队列详解
+Dijkstra 算法,用优先队列详解
 
 '''
 
@@ -22,13 +22,13 @@ class Solution:
         distance[start_node] = 1.0  # Start with probability 1.0 at the starting node
         
         '''
-        在这里，用优先队列来代替unvisited的边，一开始，unvisited只需要一个，因为
+        在这里,用优先队列来代替unvisited的边,一开始,unvisited只需要一个,因为
         我们是从起点开始
-        然后，弹出概率最大的节点，该节点肯定unvisited。
-        其次，遍历该节点的边，找出跟当前节点相连接的所有节点
+        然后,弹出概率最大的节点,该节点肯定unvisited。
+        其次,遍历该节点的边,找出跟当前节点相连接的所有节点
         如果通过当前节点以及distance数组连接的节点比distance数组大
-        那么就需要更新数组，同时将节点放入max_heap中
-        只要更新max_heap，那么当前节点肯定没有被访问
+        那么就需要更新数组,同时将节点放入max_heap中
+        只要更新max_heap,那么当前节点肯定没有被访问
         '''
         # Perform Dijkstra's algorithm
         while max_heap:

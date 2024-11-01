@@ -1,5 +1,5 @@
 '''
-很简单，把它encode进去一个hashmap，然后根据字符的位置来decode就行
+很简单,把它encode进去一个hashmap,然后根据字符的位置来decode就行
 '''
 
 class Solution:

@@ -1,5 +1,12 @@
 from collections import defaultdict
 
+'''
+用tire tree字典树来模拟文件列表操作
+
+
+'''
+
+
 class TireNode:
     def __init__(self, name):
         self.name = name

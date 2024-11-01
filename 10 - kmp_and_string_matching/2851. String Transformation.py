@@ -115,14 +115,14 @@ class Solution(object):
         in here, f[j] represent the bad number that we have after j times of transform
         g[j] represent the good number we have after j transform
 
-        第一行的解释：对于j-1轮不匹配的字串，下一轮有n-p-1种操作依然得到不匹配的字串（因为不能shift成自己）。对于j-1轮已经匹配的字串，下一轮有n-p种操作变成不匹配的字串。同理第二行的解释：对于j-1轮不匹配的字串，下一轮有p种操作变成匹配的字串。对于j-1轮已经匹配的字串，下一轮有p-1种操作依然变成匹配的字串（因为不能shift成自己）。
+        第一行的解释:对于j-1轮不匹配的字串,下一轮有n-p-1种操作依然得到不匹配的字串(因为不能shift成自己)。对于j-1轮已经匹配的字串,下一轮有n-p种操作变成不匹配的字串。同理第二行的解释:对于j-1轮不匹配的字串,下一轮有p种操作变成匹配的字串。对于j-1轮已经匹配的字串,下一轮有p-1种操作依然变成匹配的字串(因为不能shift成自己)。
 
-        转移状态矩阵：
+        转移状态矩阵:
         {
             n - p - 1,    n - p
             p,            p -1
         }
-        代表需要进行k次转移，因此需要矩阵的k次方
+        代表需要进行k次转移,因此需要矩阵的k次方
         [
             f[k],          =   [n - p - 1,    n - p          [f[0]
             g[k]                p,           p -1 ] ^ k   *   g[0]]

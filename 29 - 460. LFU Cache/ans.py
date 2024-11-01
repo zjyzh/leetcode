@@ -1,36 +1,36 @@
 """
-需要设计两个哈希表，一个k-node键值对，用来快速找到键值对
-一个是frequency-linklist，用来快速确定某个frequency
+需要设计两个哈希表,一个k-node键值对,用来快速找到键值对
+一个是frequency-linklist,用来快速确定某个frequency
 对应的缓存
 
-对于get操作，如果key在哈希表里面，那么我们需要更新
-key的访问次数，同时需要将frequency - linklist中弹出
-放入：（frequency+1） - linklist中
-这个时候，如果frequency对应的linklist为空，那么需要删除
-该frequency，并将min_frequency数字加一
+对于get操作,如果key在哈希表里面,那么我们需要更新
+key的访问次数,同时需要将frequency - linklist中弹出
+放入:(frequency+1) - linklist中
+这个时候,如果frequency对应的linklist为空,那么需要删除
+该frequency,并将min_frequency数字加一
 
-如果key不在哈希表里面，直接返回
+如果key不在哈希表里面,直接返回
 
-对于put操作，如果key在哈希表里面，我们需要更新key的值，
+对于put操作,如果key在哈希表里面,我们需要更新key的值,
 并更新访问次数。同事需要
 
 做频率更新
 ···
 需要将frequency - linklist中弹出
-放入：（frequency+1） - linklist的链表头部
-这个时候，如果frequency对应的linklist为空，那么需要删除
-该frequency，并将min_frequency数字加一
+放入:(frequency+1) - linklist的链表头部
+这个时候,如果frequency对应的linklist为空,那么需要删除
+该frequency,并将min_frequency数字加一
 ···
 
-如果key不在哈希表中，我们需要查看缓存的size
+如果key不在哈希表中,我们需要查看缓存的size
 
- 1. 如果缓存size还有空余，那么我们直接将节点放入哈希表，
-    同时更新frequency-list哈希表，注意新放入的元素
-    一定在哈希表的表头，因为表头代表时间，表末尾代表
-    访问时间最长（也就是最久没有访问的元素）会被优先淘汰
-    对于新放入的元素，缓存设置为1，同时更新min_fre = 1
- 2. 如果缓存size没有空余，那么从frequency为min_fre的
-    缓存链表中，弹出末尾的元素，然后重复上面操作。
+ 1. 如果缓存size还有空余,那么我们直接将节点放入哈希表,
+    同时更新frequency-list哈希表,注意新放入的元素
+    一定在哈希表的表头,因为表头代表时间,表末尾代表
+    访问时间最长(也就是最久没有访问的元素)会被优先淘汰
+    对于新放入的元素,缓存设置为1,同时更新min_fre = 1
+ 2. 如果缓存size没有空余,那么从frequency为min_fre的
+    缓存链表中,弹出末尾的元素,然后重复上面操作。
 
 
 """
@@ -131,10 +131,10 @@ class LFUCache:
     
     def changeFre(self,ele):
         '''
-        在这个函数里面，我们进行了两个操作
+        在这个函数里面,我们进行了两个操作
         1. 我们需要将旧元素从缓存链表中弹出
-        2. 我们需要将旧元素的访问频率更新，然后将它插入
-            相邻的缓存链表，这里表示为frequency+1
+        2. 我们需要将旧元素的访问频率更新,然后将它插入
+            相邻的缓存链表,这里表示为frequency+1
         '''
         linklist = self.frequency_hash[ele.frequency]
         original_fre = ele.frequency
@@ -152,7 +152,7 @@ class LFUCache:
     def get(self, key: int) -> int:
         
         '''
-        在get函数中，我们需要改变哈希表，同时更新缓存链表
+        在get函数中,我们需要改变哈希表,同时更新缓存链表
         '''
         if key in self.kvhash and self.kvhash[key]:
             ele = self.kvhash[key]
@@ -168,8 +168,8 @@ class LFUCache:
     def put(self, key: int, value: int) -> None:
         # print('put', key)
         '''
-        在put操作中，我们需要维护缓存size的大小
-        如果put时候更新元素，那么同样需要改变缓存
+        在put操作中,我们需要维护缓存size的大小
+        如果put时候更新元素,那么同样需要改变缓存
         '''
         if key in self.kvhash:
             ele = self.kvhash[key]
@@ -180,10 +180,10 @@ class LFUCache:
                 self.minFre += 1
         else:
             '''
-            如果put的时候插入元素，那么我们需要
-            看缓存的size，如果缓存的size过大，弹出
-            最小缓存对应的缓存链表的末尾，同时更新
-            缓存链表，设置最小缓存为1
+            如果put的时候插入元素,那么我们需要
+            看缓存的size,如果缓存的size过大,弹出
+            最小缓存对应的缓存链表的末尾,同时更新
+            缓存链表,设置最小缓存为1
             '''
             self.cap += 1
             ele = Node(key, value)

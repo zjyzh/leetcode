@@ -1,7 +1,7 @@
 from typing import List
 '''
 
-stack 经典题目，用stack就行了
+stack 经典题目,用stack就行了
 
 
 '''

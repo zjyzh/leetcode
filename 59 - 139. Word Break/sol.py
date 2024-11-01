@@ -1,12 +1,12 @@
 from typing import List
 '''
 有两种解法
-第一种是记忆化递归，每一次递归记录字符的两段:
+第一种是记忆化递归,每一次递归记录字符的两段:
 wordbreak('') and 'aaaa' in wordDict
 wordbreak('a') and 'aaa' in wordDict
 ...
 ....
-然后如果发现一个词已经解决了，把它存在字典里面：
+然后如果发现一个词已经解决了,把它存在字典里面:
 resdict['a'] = False
 resdict['aa'] = True
 ...
