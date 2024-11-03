@@ -1,43 +1,45 @@
-from collections import defaultdict
-import heapq
-
-
+from typing import List
 
 '''
 很简单,只需要将它频率最高的task找出来,假设频率最高的task的频率为m
 那么至少需要m组,但是最后一组可能填不满。
 所以,(m-1) * n 是最开始的res的长度
-然后检查最后一组,看看是否满人。
-最后,如果所有的m组都满了,但是还剩下task,就需要把剩下的task加上去。
+
+其次，找到跟频率m一样的组，那么跟频率m一样的组那就是最后一组的个数
+比如，频率为m的组有2个，那么最后一组就有两个
+因此，res更新为 (m-1) * n + fre_counter
+
+最后，将res和数组的size比较，返回较大的那个
+
 '''
+
 
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        taskset = defaultdict(int)
-        heap = []
-        for i in tasks:
-           taskset[i] += 1
+        # Step 1: Frequency counting with a fixed array of size 26 (only uppercase letters A-Z)
+        task_counts = [0] * 26
+        for task in tasks:
+            task_counts[ord(task) - ord('A')] += 1  # Calculate frequency by task letter
+
+        # Step 2: Identify the maximum frequency and count of tasks with that maximum frequency
+        max_freq = max(task_counts)
+    
+        # Step 3: Calculate the minimum required intervals
+        # (max_freq - 1) * (n + 1): Accounts for the total blocks (rows of n+1 slots each) for max_freq - 1 occurrences
+        # max_count: The last group of max_freq tasks may fit in the final row without needing additional idle time
         n = n + 1
-        resset = []
-        for i in taskset.keys():
-            valu = taskset[i]
-            resset.append([i,valu])
-            # update_dict_and_heap(taskset,heap, i, valu)
-        resset = sorted(resset, key = lambda x:x[1], reverse = True)
-        res = 0
-        
-        num = resset[0][1]
-        res += (num -1) * n 
-        
-        for j in resset: # 检查最后一组的数量
-            j[1] -= (num -1)
-            if j[1] > 0:
-                res += j[1]
-        
-        remain = len(tasks) - res # 检查剩余的数量
-        if remain > 0:
-            res += remain
-        return res
-            
-        
+        min_intervals = (max_freq - 1) * (n) 
+
+        max_count = sum(1 for count in task_counts if count == max_freq)
+
+        min_intervals += max_count
+
+        # Step 4: Ensure that the result is at least the total number of tasks, to avoid overcounting idle times
+        return max(min_intervals, len(tasks))
+
+# from collections import defaultdict
+# import heapq
+
+
+
