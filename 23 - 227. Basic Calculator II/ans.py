@@ -1,3 +1,37 @@
+'''
+新的更加简洁一点的答案：
+
+'''
+
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        stack = []
+        current_num = 0
+        last_operator = '+'
+        
+        for i, char in enumerate(s):
+            if char.isdigit():
+                current_num = current_num * 10 + int(char)
+            
+            if char in "+-*/" or i == len(s) - 1:
+                if last_operator == '+':
+                    stack.append(current_num)
+                elif last_operator == '-':
+                    stack.append(-current_num)
+                elif last_operator == '*':
+                    stack[-1] = stack[-1] * current_num
+                elif last_operator == '/':
+                    # Integer division truncates toward zero
+                    stack[-1] = int(stack[-1] / current_num)
+                
+                last_operator = char
+                current_num = 0
+        
+        return sum(stack)
+
+
+
 class Solution:
 
     '''
@@ -11,6 +45,7 @@ class Solution:
     计算完之后,将数字入栈。
     重复直到优先级满足
     '''
+
 
     def isUpper(self, s, r):
         if (r == '*' or r == '/' or r == '+' or r == '-') and (s == '+' or s == '-'):

@@ -1,7 +1,32 @@
 """
 两个函数,一个遍历从当前pos开始的回文数列,
 一个遍历从当前gap开始的回文数列
+
+可以简化成一个函数
+
 """
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        def expand_around_center(left: int, right: int) -> str:
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            return s[left + 1:right]
+        
+        longest = ""
+        for i in range(len(s)):
+            # Odd-length palindrome (single center)
+            odd_palindrome = expand_around_center(i, i)
+            # Even-length palindrome (pair center)
+            even_palindrome = expand_around_center(i, i + 1)
+            # Update the longest palindrome found
+            longest = max(longest, odd_palindrome, even_palindrome, key=len)
+        
+        return longest
+
+
+
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
