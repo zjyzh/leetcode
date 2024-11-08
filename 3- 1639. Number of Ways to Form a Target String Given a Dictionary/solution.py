@@ -1,5 +1,14 @@
 from collections import defaultdict
 
+    # dp[i][k] : in the ith target and kth char_words, how many ways for us to use
+    # dp[i][k] = dp[i][k-1] (we don't use the kth char)
+    # dp[i][k] += dp[i-1][k-1] * count( how many char we found in the kth char_words) we use kth char
+    # return dp[n][m] 
+    # n = len(target)
+    # m = len(word)
+
+
+
 class Solution(object):
     def numWays(self, words, target):
         """
@@ -13,13 +22,7 @@ class Solution(object):
                 # char_words[j] = defaultdict(int)
                 char_words[j][i[j-1]] += 1
         
-        # print(char_words)
-        # dp[i][k] : in the ith target and kth char_words, how many ways for us to use
-        # dp[i][k] = dp[i][k-1] (we don't use the kth char)
-        # dp[i][k] += dp[i-1][k-1] * count( how many char we found in the kth char_words) we use kth char
-        # return dp[n][m] 
-        # n = len(target)
-        # m = len(word)
+        
         n = len(target)
         m = len(words[0])
         dp = [ [0 for i in range(m+1)] for j in range(n+1) ]

@@ -28,6 +28,54 @@ underlying solution using bfs
 
 """
 
+
+
+
+from typing import List, Dict
+from collections import defaultdict
+
+class Solution:
+    def __init__(self):
+        self.graph = defaultdict(dict)
+    
+    def add_edge(self, u: str, v: str, value: float):
+        # Add edges in both directions with appropriate weights
+        self.graph[u][v] = value
+        self.graph[v][u] = 1 / value
+
+    def dfs(self, start: str, end: str, visited: set) -> float:
+        # If start node equals end, return 1.0 as the division of any variable by itself is 1
+        if start == end:
+            return 1.0
+        visited.add(start)
+        
+        # Visit all neighbors of the start node
+        for neighbor, value in self.graph[start].items():
+            if neighbor in visited:
+                continue
+            result = self.dfs(neighbor, end, visited)
+            if result != -1.0:  # valid path found
+                return value * result
+        
+        return -1.0  # No valid path
+
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        # Build graph
+        for (u, v), value in zip(equations, values):
+            self.add_edge(u, v, value)
+        
+        results = []
+        for start, end in queries:
+            if start not in self.graph or end not in self.graph:
+                results.append(-1.0)  # If start or end node is not in the graph, return -1.0
+            else:
+                results.append(self.dfs(start, end, set()))  # Perform DFS with a fresh visited set
+        
+        return results
+
+
+
+
 class Solution:
 
     def bfs(self, start, end):

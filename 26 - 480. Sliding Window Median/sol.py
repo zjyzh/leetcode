@@ -20,6 +20,78 @@ a balance between left and right
 '''
 the python method of maxheap
 '''
+
+
+import heapq
+from collections import defaultdict
+from typing import List
+
+class Solution:
+    def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
+        # Max-heap for the left side (invert values to use Python's min-heap as max-heap)
+        left_heap = []
+        # Min-heap for the right side
+        right_heap = []
+        # Dictionary to keep track of elements marked for deletion
+        delayed_removals = defaultdict(int)
+        
+        # Helper function to balance the heaps
+        def balance_heaps():
+            # Ensure left_heap has at most the same number of elements as right_heap
+            while len(left_heap) > len(right_heap):
+                heapq.heappush(right_heap, -heapq.heappop(left_heap))
+            while len(right_heap) > len(left_heap) + 1:
+                heapq.heappush(left_heap, -heapq.heappop(right_heap))
+            
+            # Remove elements marked for deletion from the top of each heap
+            while left_heap and delayed_removals[-left_heap[0]] > 0:
+                delayed_removals[-heapq.heappop(left_heap)] -= 1
+            while right_heap and delayed_removals[right_heap[0]] > 0:
+                delayed_removals[heapq.heappop(right_heap)] -= 1
+
+        # Helper function to get the current median
+        def get_median():
+            if k % 2 == 1:
+                # If k is odd, the median is the root of right_heap
+                return float(right_heap[0])
+            else:
+                # If k is even, the median is the average of the roots of both heaps
+                return (right_heap[0] - left_heap[0]) / 2.0
+
+        # Initialize the heaps with the first 'k' elements
+        for i in range(k):
+            if not right_heap or nums[i] >= right_heap[0]:
+                heapq.heappush(right_heap, nums[i])
+            else:
+                heapq.heappush(left_heap, -nums[i])
+            balance_heaps()
+
+        # Store the first median
+        result = [get_median()]
+
+        # Process the rest of the elements
+        for i in range(k, len(nums)):
+            # Outgoing element (leaves the sliding window)
+            outgoing = nums[i - k]
+            # Incoming element (enters the sliding window)
+            incoming = nums[i]
+            
+            # Mark the outgoing element for deletion
+            delayed_removals[outgoing] += 1
+            
+            # Remove the outgoing element from its respective heap
+            if outgoing >= right_heap[0]:
+                right_heap_size = len(right_heap)
+                if right_heap_size > 0 and outgoing == right_heap[0]:
+                    heapq.heappop(right_heap)
+                else:
+                    delayed_removals[outgoing] += 1
+                balance_heaps()
+            else:
+                left_heap
+
+
+
 def maxheappush(pq, k):
     heapq.heappush(pq, -k)
 

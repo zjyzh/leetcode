@@ -13,98 +13,129 @@ if we can finish it using mid times, return True.
 """
 
 
+from typing import List
 
 class Solution:
-
-    # check if we can do it using m step
-    def can(self, nums, x, y, m):
-        currentNum = [ (i - y*m) for i in nums]
-        step = x - y
+    def can(self, nums: List[int], x: int, y: int, m: int) -> bool:
+        # Calculate the amount reduced for all except the chosen index in `m` steps
+        reduce_other_elements = y * m
+        max_needed = max(0, nums[-1] - reduce_other_elements)
         
-        for i in range(len(currentNum) -1, -1, -1):
-            cur = currentNum[i]
-            if cur > 0:
-                if cur % step == 0:
-                    m -= cur // step
-                else:
-                    m -= ((cur// step) +1)
-            else:
-                break
-        if m < 0:
-            return False
-        else:
-            return True
-
+        # Calculate the effective decrement per chosen operation for the selected index
+        step = x - y
+        # Calculate the required steps to make the largest element non-positive
+        return max_needed <= m * step
 
     def minOperations(self, nums: List[int], x: int, y: int) -> int:
-        nums = sorted(nums)
-        i = len(nums) -1
-        maxnum = nums[-1]
-        res = 0
+        nums.sort()  # Sort once, before binary search
 
-        upper = 0
-        s = sum(nums)
-        if s % x == 0:
-            upper =  (s // x )
-        else:
-            upper =  (s // x  + 1)
+        # Set binary search bounds
+        left, right = 0, max(nums) // y + 1
+        res = right  # Start with an upper bound for result
 
-        if len(nums) == 1:
-            return upper
-
-
-        left = 0
-        right = upper
-        res = 0
-        # check every step to see we can do it or not
         while left <= right:
             mid = (left + right) // 2
             if self.can(nums, x, y, mid):
+                res = mid  # Record mid as a potential answer
                 right = mid - 1
-                res = mid
             else:
                 left = mid + 1
+
         return res
 
 
 
+# class Solution:
 
-        # while maxnum > 0:
+#     # check if we can do it using m step
+#     def can(self, nums, x, y, m):
+#         currentNum = [ (i - y*m) for i in nums]
+#         step = x - y
+        
+#         for i in range(len(currentNum) -1, -1, -1):
+#             cur = currentNum[i]
+#             if cur > 0:
+#                 if cur % step == 0:
+#                     m -= cur // step
+#                 else:
+#                     m -= ((cur// step) +1)
+#             else:
+#                 break
+#         if m < 0:
+#             return False
+#         else:
+#             return True
+
+
+#     def minOperations(self, nums: List[int], x: int, y: int) -> int:
+#         nums = sorted(nums)
+#         i = len(nums) -1
+#         maxnum = nums[-1]
+#         res = 0
+
+#         upper = 0
+#         s = sum(nums)
+#         if s % x == 0:
+#             upper =  (s // x )
+#         else:
+#             upper =  (s // x  + 1)
+
+#         if len(nums) == 1:
+#             return upper
+
+
+#         left = 0
+#         right = upper
+#         res = 0
+#         # check every step to see we can do it or not
+#         while left <= right:
+#             mid = (left + right) // 2
+#             if self.can(nums, x, y, mid):
+#                 right = mid - 1
+#                 res = mid
+#             else:
+#                 left = mid + 1
+#         return res
+
+
+
+
+#         # while maxnum > 0:
             
-        #     print('maxnum before', maxnum)
-        #     # res += 1
-        #     times = 0
-        #     print("op    ", res)
-        #     if maxnum % x == 0:
-        #         times = (maxnum // x )
-        #     else:
-        #         times = (nums[-1] // x  + 1)
+#         #     print('maxnum before', maxnum)
+#         #     # res += 1
+#         #     times = 0
+#         #     print("op    ", res)
+#         #     if maxnum % x == 0:
+#         #         times = (maxnum // x )
+#         #     else:
+#         #         times = (nums[-1] // x  + 1)
 
-        #     for j in range(len(nums) - 1):
-        #         nums[j] -= y * times
-        #     maxnum -= x*times
-        #     res += times
-        #     t = len(nums) -2
-        #     swap = False
-        #     print(t, maxnum, nums[t])
-        #     while t >= 0 and maxnum < nums[t]:
-        #         swap = True
-        #         print('swap', t, t+1, nums[t],nums[t+1])
-        #         nums[t+1] = nums[t]
+#         #     for j in range(len(nums) - 1):
+#         #         nums[j] -= y * times
+#         #     maxnum -= x*times
+#         #     res += times
+#         #     t = len(nums) -2
+#         #     swap = False
+#         #     print(t, maxnum, nums[t])
+#         #     while t >= 0 and maxnum < nums[t]:
+#         #         swap = True
+#         #         print('swap', t, t+1, nums[t],nums[t+1])
+#         #         nums[t+1] = nums[t]
 
-        #         t -= 1
-        #     if swap:
-        #         t += 1
-        #         nums[t] = maxnum
-        #         print(t, nums[t])
-        #     else:
-        #         nums[-1] = maxnum
-        #     maxnum = nums[-1]
-        #     print('maxnum', maxnum)
-        #     for s in nums:
-        #         print(s, end='. ')
-        #     print()
+#         #         t -= 1
+#         #     if swap:
+#         #         t += 1
+#         #         nums[t] = maxnum
+#         #         print(t, nums[t])
+#         #     else:
+#         #         nums[-1] = maxnum
+#         #     maxnum = nums[-1]
+#         #     print('maxnum', maxnum)
+#         #     for s in nums:
+#         #         print(s, end='. ')
+#         #     print()
                 
-        # return res
+#         # return res
             
         
